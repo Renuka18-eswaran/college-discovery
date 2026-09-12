@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+:root {
+  /* Palette — academic/collegiate, not the generic cream+terracotta combo */
+  --ink: #1b2340;       /* headings, primary text, nav */
+  --ink-soft: #333c5c;
+  --paper: #f5f4ef;     /* page background */
+  --surface: #ffffff;   /* cards */
+  --gold: #b1811f;      /* accent: ratings, CTAs, active states */
+  --gold-soft: #f1e4c3;
+  --slate: #5f6478;     /* secondary text */
+  --line: #e1ded3;      /* hairline borders */
+  --success: #2f7a4d;
+  --success-soft: #e4f1e8;
+  --danger: #a3412b;
+}
+
+@theme inline {
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-paper: var(--paper);
+  --color-surface: var(--surface);
+  --color-gold: var(--gold);
+  --color-gold-soft: var(--gold-soft);
+  --color-slate: var(--slate);
+  --color-line: var(--line);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-danger: var(--danger);
+  --font-display: var(--font-fraunces);
+  --font-sans: var(--font-inter);
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans), ui-sans-serif, system-ui, sans-serif;
+}
+
+h1, h2, h3, .font-display {
+  font-family: var(--font-display), serif;
+}
+
+* {
+  scrollbar-color: var(--line) transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

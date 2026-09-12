@@ -1,0 +1,77 @@
+// Prisma schema — College Discovery Platform
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+model College {
+  id             String   @id @default(cuid())
+  slug           String   @unique
+  name           String
+  city           String
+  state          String
+  type           String // "Government" | "Private" | "Deemed"
+  establishedYear Int
+  rating         Float // 0-5, aggregate
+  reviewCount    Int      @default(0)
+  avgFeesPerYear Int // in INR, used for filtering/sorting
+  description    String
+  streams        String // comma-separated, e.g. "Engineering,Management"
+  campusSizeAcres Float?
+  heroColor      String   @default("#1B2340") // deterministic accent per college, used in listing UI
+  createdAt      DateTime @default(now())
+
+  courses    Course[]
+  placements Placement[]
+  reviews    Review[]
+
+  @@index([city])
+  @@index([state])
+  @@index([rating])
+  @@index([avgFeesPerYear])
+}
+
+model Course {
+  id            String  @id @default(cuid())
+  collegeId     String
+  college       College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  name          String
+  degree        String // "B.Tech", "MBA", etc.
+  durationYears Int
+  feesTotal     Int // total program fees, INR
+  seats         Int
+
+  @@index([collegeId])
+}
+
+model Placement {
+  id                String  @id @default(cuid())
+  collegeId         String
+  college           College @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  year              Int
+  avgPackageLPA     Float
+  highestPackageLPA Float
+  medianPackageLPA  Float
+  placementPercent  Float
+  topRecruiters     String // comma-separated
+
+  @@index([collegeId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  collegeId String
+  college   College  @relation(fields: [collegeId], references: [id], onDelete: Cascade)
+  authorName String
+  rating    Float
+  title     String
+  content   String
+  pros      String?
+  cons      String?
+  createdAt DateTime @default(now())
+
+  @@index([collegeId])
+}
